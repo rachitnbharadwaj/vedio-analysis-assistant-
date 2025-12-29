@@ -1,63 +1,63 @@
-# YouTube Topic Extractor
+# YouTube Learning Assistant Frontend
 
-A cost-efficient, production-ready Python tool that extracts topic-wise timestamps from long YouTube videos using Google's Gemini AI.
+This is the modern web interface for the YouTube Learning Assistant, built with Next.js 16, React 19, and Tailwind CSS. It connects to the Python backend to provide an interactive video analysis experience.
 
 ## Features
 
-- **Smart Transcript Acquisition**: Automatically fetches transcripts using `youtube-transcript-api` with `yt-dlp` fallback.
-- **Intelligent Chunking**: splits video into time-aware segments (default 3 mins) to preserve context.
-- **Cost-Optimized AI**: Uses Gemini 2.0 Flash with batch processing to minimize token costs.
-- **Q&A Mode**: Ask questions about the video and get answers with specific timestamp citations.
-- **Robust**: Includes auto-retry logic for API rate limits and robust fetching.
+- **Video Analysis**: Paste a YouTube URL to get a comprehensive topic breakdown.
+- **Interactive Chat**: Ask questions about the video content via a chat interface.
+- **Smart Summaries**: View timestamped topics and summaries.
+- **Modern UI**: Clean, responsive design using Shadcn UI and Tailwind CSS.
 
-## Installation
+## Tech Stack
 
-1. Install dependencies:
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
+- **Library**: [React 19](https://react.dev/)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Components**: [Radix UI](https://www.radix-ui.com/) (primitives), [Lucide React](https://lucide.dev/) (icons)
+- **Forms**: React Hook Form + Zod
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or later recommended)
+- npm or pnpm
+
+### Installation
+
+1. Navigate to the frontend directory:
    ```bash
-   pip install -r requirements.txt
+   cd frontend
    ```
 
-2. Set up API Key:
-   - Create a `.env` file in this directory.
-   - Add your Gemini API key:
-     ```
-     GEMINI_API_KEY=your_actual_api_key_here
-     ```
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   pnpm install
+   ```
 
-## Usage
+### Running the Development Server
 
-### 1. Extract Topics
-Run the tool with a YouTube URL to get a table of topics and timestamps:
+1. Start the dev server:
+   ```bash
+   npm run dev
+   # or
+   pnpm dev
+   ```
 
-```bash
-python main.py "https://www.youtube.com/watch?v=VIDEO_ID"
-```
+2. Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
-### 2. Ask Questions
-Ask a specific question about the video content:
+## Integration with Backend
 
-```bash
-python main.py "https://www.youtube.com/watch?v=VIDEO_ID" --question "What is the main takeaway?"
-```
+This frontend requires the Python backend server to be running.
+1. Ensure the backend server is running on `http://localhost:8000` (see `backend/README.md` for instructions).
+2. The frontend is configured to communicate with the backend API endpoints (e.g., `/api/analyze`, `/api/chat`).
 
-### Options
+## Project Structure
 
-- `--chunk-size`: Set the duration of each analysis segment in minutes (default: 3).
-  ```bash
-  python main.py "URL" --chunk-size 5
-  ```
-
-## Design Architecture
-
-1.  **Fetcher**: robustly retrieves transcripts, handling auto-generated or translation fallbacks.
-2.  **Preprocessor**: cleans raw text (removing [Music], filler) and groups into `chunk_size` slots.
-3.  **AI Handler**:
-    - Uses **Batch Processing** (groups 5 chunks per request) to reduce HTTP overhead and repeated system prompts.
-    - Uses **Gemini 2.0 Flash** for high speed and low cost.
-    - Implements **Backoff Retries** to handle API rate limits gracefully.
-4.  **Merger**: Coalesces sequential chunks with the same label into a single topic entry.
-
-## Requirements
-
-- Python 3.8+
-- A valid Google Gemini API Key
+- `app/`: Next.js App Router pages and layouts.
+- `components/`: Reusable UI components (including Shadcn UI components).
+- `lib/`: Utility functions and configuration.
+- `public/`: Static assets.
